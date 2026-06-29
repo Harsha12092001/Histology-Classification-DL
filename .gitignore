@@ -1,0 +1,30 @@
+# Ignore dataset files
+data/
+data/*
+
+# Ignore test scripts
+Code/test_*.py
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+env/
+
+# Model checkpoints
+*.pth
+*.pt
+checkpoints/
+
+# Logs
+logs/
+*.log
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+Thumbs.db
