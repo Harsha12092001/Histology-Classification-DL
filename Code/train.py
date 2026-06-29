@@ -29,5 +29,9 @@ def main():
     trainer = Trainer(model, criterion, optimizer, device)
     trainer.fit(train_loader, val_loader, epochs=config["EPOCHS"])
 
+    #logging of test loss and accuracy after training
+    test_loss, test_acc = trainer.evaluate(test_loader)
+    print(f"Test Loss: {test_loss:.4f} - Test Acc: {test_acc:.2f}%")
+
 if __name__ == "__main__":
     main()
