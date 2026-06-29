@@ -22,7 +22,7 @@ def get_loaders(data, data_path, batch_size, val_split=0.1):
     
     train_dataset = TensorDataset(train_data, train_labels)
     val_dataset = TensorDataset(val_data, val_labels)
-    test_dataset = TensorDataset(data_dict['test_images'], data_dict['test_labels'].squeeze())  
+    test_dataset = TensorDataset(data_dict['test_images'], data_dict['test_labels'].squeeze())  #Fix data loading by squeezing labels for train, validation, and test datasets
     
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(dataset=val_dataset, batch_size=batch_size, shuffle=False)
