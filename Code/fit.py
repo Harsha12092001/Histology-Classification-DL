@@ -23,6 +23,7 @@ class Trainer:
             outputs = self.model(images)
             loss = self.criterion(outputs, labels)
             
+            self.optimizer.zero_grad()  #optimizer zero_grad placement in training loop
             loss.backward()
             self.optimizer.step()
             
