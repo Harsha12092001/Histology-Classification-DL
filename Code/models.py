@@ -139,7 +139,7 @@ class ResNet18(nn.Module):
     
     activation - flexible activation function to allow experimentation (e.g., ReLU, LeakyReLU, etc.)
     """
-    def __init__(self, in_channels, num_classes, **kwargs):
+    def __init__(self, in_channels, activation_str,num_classes, **kwargs):
         super().__init__()
 
         activation = getattr(nn, activation_str)
