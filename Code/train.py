@@ -22,7 +22,7 @@ def main():
     train_loader, val_loader, _ = get_loaders(data=config["DATA"], data_path=config["DATA_PATH"], batch_size=config["BATCH_SIZE"])
 
     model_class = getattr(models, config["MODEL"])
-    model = model_class(in_channels=config["CHANNELS"], num_classes=config["NUM_CLASSES"], drop_rate=config["DROP"], activation_str=None).to(device)
+    model = model_class(in_channels=config["CHANNELS"], num_classes=config["NUM_CLASSES"], drop_rate=config["DROP"], activation_str=config["ACTIVATION"]).to(device)    #added drop_rate and activation as configurable one
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=config["LEARNING_RATE"])
 
