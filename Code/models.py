@@ -139,7 +139,7 @@ class ResNet18(nn.Module):
     
     activation - flexible activation function to allow experimentation (e.g., ReLU, LeakyReLU, etc.)
     """
-    def __init__(self, in_channels, activation_str,num_classes, **kwargs):
+    def __init__(self, in_channels, activation_str,num_classes, **kwargs):  # added activation_str as a parameter for flexibility
         super().__init__()
 
         activation = getattr(nn, activation_str)
@@ -177,4 +177,4 @@ class ResNet18(nn.Module):
         out = self.stage4(out)
         out = self.avgpool(out)
         out = torch.flatten(out, 1)
-        self.classifier(out)
+        return self.classifier(out) #he forward pass ends and doesnt have any return function
