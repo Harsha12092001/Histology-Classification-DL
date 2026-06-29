@@ -1,0 +1,12 @@
+{
+    "DATA": "chest",
+    "DATA_PATH": "data",
+    "MODEL": "AlexNet",
+    "CHANNELS": 3,
+    "NUM_CLASSES": 8,
+    "BATCH_SIZE": 64,
+    "EPOCHS": 2,
+    "LEARNING_RATE": 0.001,
+    "ACTIVATION": "ReLU",
+    "DROP": 0.5
+}
