@@ -6,8 +6,8 @@ MG 6/6/2026
 import torch
 import torch.nn as nn
 
-activation_str = "Identity"  # Placeholder for activation function, can be replaced with "ReLU" or others as needed.
-
+#activation_str = "Identity"  # Placeholder for activation function, can be replaced with "ReLU" or others as needed.
+#activation_str removed as it was global and hardcoded
 
 class VGGBlock(nn.Module):
     """Modular VGG block with configurable number of conv layers and channels.
