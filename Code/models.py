@@ -63,7 +63,7 @@ class ResBlock(nn.Module):
 
 class AlexNet(nn.Module):
     """AlexNet (Krizhevsky et al., 2012) adapted for smaller inputs."""
-    def __init__(self,in_channels, **kwargs):
+    def __init__(self,in_channels, num_classes,**kwargs):
         super().__init__()
 
         drop_rate = kwargs.get("drop_rate", 0.5)
@@ -95,7 +95,7 @@ class AlexNet(nn.Module):
             nn.Dropout(p=drop_rate),
             nn.Linear(1024, 1024),
             nn.ReLU(inplace=True),
-            nn.Linear(1024, 11),
+            nn.Linear(1024, num_classes), #Prevents shape mismatch crash
         )
 
     def forward(self, x):
