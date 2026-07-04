@@ -120,7 +120,7 @@ class VGG16(nn.Module):
         )
         
         self.classifier = nn.Sequential(
-            nn.Linear(4608, 1024), #Prevents shape mismatch crash
+            nn.Linear(2048, 1024), #Prevents shape mismatch crash
             nn.ReLU(inplace=True),
             nn.Dropout(p=drop_rate),
             nn.Linear(1024, 512),
