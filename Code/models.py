@@ -179,3 +179,39 @@ class ResNet18(nn.Module):
         out = self.avgpool(out)
         out = torch.flatten(out, 1)
         return self.classifier(out) #he forward pass ends and doesnt have any return function
+
+
+class GreenNet(nn.Module):
+    """
+    Two Conv-ReLU-MaxPool blocks, followed by Average Pooling and a single FC layer.
+    """
+    def __init__(self, in_channels=3, num_classes=4 , **kwargs):
+        super().__init__()
+
+        # two convolutional layers with ReLU activation and max pooling
+        self.conv1 = nn.Conv2d(in_channels, 16, kernel_size=3, padding=1)
+        self.bn1 = nn.BatchNorm2d(16)
+        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, padding=1)
+        self.bn2 = nn.BatchNorm2d(32)
+
+        self.relu = nn.ReLU()
+        self.pool = nn.MaxPool2d(2)
+
+        # adaptive average pooling to reduce spatial dimensions to 1x1
+        self.gap = nn.AdaptiveAvgPool2d(1)
+        # fully connected layer to output the number of classes
+        self.fc = nn.Linear(32, num_classes)
+
+    '''
+    Shape trace (input: [3, 32, 32]):
+      -> conv1+bn+pool -> [16, 16, 16]
+      -> conv2+bn+pool -> [32, 8, 8]
+      -> gap            -> [32, 1, 1]
+      -> flatten        -> 32   (must match fc's input size)
+    '''
+    def forward(self, x):
+        x = self.pool(self.relu(self.conv1(x)))
+        x = self.pool(self.relu(self.conv2(x)))
+        x = self.gap(x)
+        x = x.flatten(1)
+        return self.fc(x)
