@@ -11,6 +11,7 @@ import torch.optim as optim
 from data import get_loaders
 import models
 from fit import Trainer
+import time
 
 def main():   
     with open("config.json", "r") as f:
@@ -26,8 +27,23 @@ def main():
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=config["LEARNING_RATE"])
 
+    # Start training and measure time
+    train_start = time.perf_counter()
+    if torch.cuda.is_available():
+        torch.cuda.reset_peak_memory_stats()
+
     trainer = Trainer(model, criterion, optimizer, device)
     trainer.fit(train_loader, val_loader, epochs=config["EPOCHS"])
+    
+    # End training and measure time
+    train_end = time.perf_counter()
+    training_time = train_end - train_start
+    print(f"Total Training Time: {training_time:.2f} seconds")
+
+    # Measure peak memory usage during training
+    if torch.cuda.is_available():
+        peak_train_mem_mb = torch.cuda.max_memory_allocated() / (1024 ** 2)
+        print(f"Peak Training Memory: {peak_train_mem_mb:.1f} MB")
 
     #logging of test loss and accuracy after training
     test_loss, test_acc = trainer.evaluate(test_loader)
@@ -59,6 +75,29 @@ def main():
     print(f"Precision: {precision:.4f}")
     print(f"Recall:    {recall:.4f}")
     print(f"F1 Score:  {f1:.4f}")
+    
+    # ---- Inference latency + inference-phase peak memory ----
+    if torch.cuda.is_available():
+        torch.cuda.reset_peak_memory_stats()  # reset so this only measures inference
+
+    sample = next(iter(test_loader))[0][0:1].to(device)
+
+    with torch.no_grad():
+        _ = model(sample)  # warm-up, not timed
+
+    num_runs = 50
+    start = time.perf_counter()
+    with torch.no_grad():
+        for _ in range(num_runs):
+            _ = model(sample)
+    end = time.perf_counter()
+
+    latency_ms = (end - start) / num_runs * 1000
+    print(f"Inference Latency: {latency_ms:.3f} ms per sample")
+
+    if torch.cuda.is_available():
+        peak_infer_mem_mb = torch.cuda.max_memory_allocated() / (1024 ** 2)
+        print(f"Peak Inference Memory: {peak_infer_mem_mb:.1f} MB")
 
 if __name__ == "__main__":
     main()
