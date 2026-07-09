@@ -19,23 +19,23 @@ This repository contains a stabilized, benchmarked, and extended version of a de
 ```
 .
 ├── Code/
-│   ├── data.py                  # Dataset loading and train/val/test split
-│   ├── models.py                # AlexNet, VGG16, ResNet18, GreenNet architectures
-│   ├── fit.py                   # Trainer class (train/eval loop)
-│   ├── train.py                 # Main entry point, reads config.json
-│   ├── transfer_learning.py     # Exercise 3: frozen/fine-tuned transfer learning
-│   └── config.json              # Active run configuration
+│   ├── data.py                
+│   ├── models.py              
+│   ├── fit.py                   
+│   ├── train.py                 
+│   ├── transfer_learning.py     
+│   └── config.json              
 ├── data/
 │   ├── cells.pt
 │   ├── chest.pt
 │   ├── lesions.pt
-│   ├── orgs.pt                  # Large organ dataset (donor / Exercise 1)
-│   └── organs.pt                # Small organ dataset (Exercise 3 target)
-├── Audit.md                 # Bug-by-bug changelog with commit hashes
-├── report_task1.md / .pdf       # Exercise 1: best model per dataset
-├── report_task2.md / .pdf       # Exercise 2: Green Initiative analysis
-├── report_task3.md / .pdf       # Exercise 3: transfer learning report
-└── README.md                    # This file
+│   ├── orgs.pt                  
+│   └── organs.pt               
+├── Audit.md                 
+├── report_task1.md / .pdf      
+├── report_task2.md / .pdf     
+├── report_task3.md / .pdf       
+└── README.md                    
 ```
 
 ## Prerequisites
