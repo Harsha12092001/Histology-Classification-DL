@@ -1,4 +1,4 @@
-# AUDIT LOG — Part 1: Stabilizing the Existing Codebase
+# AUDIT LOG — Task 1: Stabilizing the Existing Codebase
 **Team Members:**  
 1. Harshavardini Gowrisankar -10012956
 2. Anshita Ramayanam - 10013473 
