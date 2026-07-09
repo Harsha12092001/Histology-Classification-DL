@@ -49,6 +49,10 @@ def main():
     test_loss, test_acc = trainer.evaluate(test_loader)
     print(f"Test Loss: {test_loss:.4f} - Test Acc: {test_acc:.2f}%")
 
+    # Save the model weights after training
+    torch.save(model.state_dict(), f"{config['MODEL']}_{config['DATA']}_weights.pth")
+    print(f"Saved weights to {config['MODEL']}_{config['DATA']}_weights.pth")
+
     # Evaluate on the test set and compute metrics
     model.eval()
     all_preds = []
