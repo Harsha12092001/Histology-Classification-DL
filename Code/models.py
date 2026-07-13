@@ -87,7 +87,18 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
         )
-        
+        '''
+    ->Input is [3,64,64], 3-channel / 1-channels 64 x 64 image
+    ->After Conv1, [48,32,32] — stride 2 halves size
+    ->After MaxPool1, [48,16,16] — pool(3,2,1) divides size by 2
+    ->After Conv2, [128,16,16] — padding 2 keeps size same
+    ->After MaxPool2, [128,8,8] — divides size by 2
+    ->After Conv3-Conv5, [192,8,8] — 3x3 conv + padding 1 keeps size same
+    ->After MaxPool3, [192,4,4] — divides size by 2
+    -> Flattened size = 192 x 4 x 4 = 3072
+        '''
+
+
         self.classifier = nn.Sequential(
             nn.Dropout(p=drop_rate),
             nn.Linear(3072, 1024),  #Prevents shape mismatch crash
@@ -118,9 +129,17 @@ class VGG16(nn.Module):
             VGGBlock(256, 512, num_convs=3),
             VGGBlock(512, 512, num_convs=3)
         )
-        
+        '''
+    ->Input is [3,64,64], a 3-channel or 1-channel 64x64 image
+    ->After Block 1, [64,32,32] — MaxPool halves size
+    ->After Block 2, [128,16,16]  
+    ->After Block 3, [256,8,8]  
+    ->After Block 4, [512,4,4]  
+    ->After Block 5, [512,2,2]  
+    ->Flattened size = 512 x 2 x 2 = 2048
+        '''
         self.classifier = nn.Sequential(
-            nn.Linear(2048, 1024), #Prevents shape mismatch crash
+            nn.Linear(2048, 1024),
             nn.ReLU(inplace=True),
             nn.Dropout(p=drop_rate),
             nn.Linear(1024, 512),
@@ -169,6 +188,16 @@ class ResNet18(nn.Module):
         
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.classifier = nn.Linear(512, num_classes)
+        '''
+        ->Input is [3,64,64], a 3-channel or 1-channel 64x64 image
+        ->After Conv1, [64,64,64] — stride 1 keeps size
+        ->After Stage 1, [64,64,64] — stride 1 keeps size
+        ->After Stage 2, [128,32,32] — stride 2 halves size
+        ->After Stage 3, [256,16,16] — stride 2 halves
+        ->After Stage 4, [512,8,8] — stride 2 halves
+        ->After AvgPool, [512,1,1] — adaptive pooling reduces to
+        ->Flattened size = 512 x 1 x 1 = 512
+        '''
 
     def forward(self, x):
         out = self.activation(self.bn1(self.conv1(x)))
@@ -178,7 +207,7 @@ class ResNet18(nn.Module):
         out = self.stage4(out)
         out = self.avgpool(out)
         out = torch.flatten(out, 1)
-        return self.classifier(out) #he forward pass ends and doesnt have any return function
+        return self.classifier(out) #the forward pass ends and doesnt have any return function
 
 
 class GreenNet(nn.Module):
